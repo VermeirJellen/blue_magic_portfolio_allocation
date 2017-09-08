@@ -1,0 +1,114 @@
+---
+title: "Blue Magic Capital - Portfolio Allocation"
+output: rmarkdown::github_document
+---
+
+The ```BlueMagicPortfolio``` function can be used to easily copy the fund allocations from the [Blue Magic Capital website](http://bluemagic.info/ "Blue Magic Capital"). 
+
+Note: The readme file below was last updated on sep 08, 2017. The file does not auto-update. Hence, the outputs below might be outdated. You should run the function locally to request up to date fund-allocation information.
+
+# Usage
+
+To use the ```BlueMagicPortfolio``` function, the user should input the total usd or btc amount to invest in combination with the requested weight structure between the three funds. The function subsequently outputs the corresponding percentage, btc and usd amounts that should be allocated to the individual assets that are contained in the funds.
+
+### Inputs:
+
+- ```usd_allocation```: Total amount of usd to invest.
+- ```btc_allocation```: Total amount of btc to invest.
+- ```weights```: Weight allocation between the three funds (retirement / dynamic / extreme).
+
+Only one of ```usd_allocation``` or ```btc_allocation``` should be given as input. The btc to usd conversion is done using [coinmarketcap.com](https://coinmarketcap.com/) BTC pricing data.
+
+### Outputs:
+
+A list containing the following information:
+
+- ```requested_allocations```: a ```data.frame``` containing the requested percentage, usd and btc allocations for the assets in the funds.
+- ```blue_magic_allocations```: a ```data.frame``` containing an overview of percentage allocations for the three bmc funds.
+- ```weights```: Identical to ```weights``` inputs.
+- ```usd_allocation```: Total usd amount invested.
+- ```btc_allocation```: Total btc amount invested.
+
+Note: one of ```usd_allocation``` or ```btc_allocation``` is identical to the input value, the other value will be calculated by using the coinmarket.com Bitcoin price.
+
+# Examples
+## Retirement Fund
+
+#### Request 500k USD Allocation
+```{r message=FALSE}
+source("config/Config.R")
+# Retirement Fund (request 500k allocation)
+bmc.retirement <- BlueMagicPortfolio(usd_allocation = 500000,
+                                     weights        = c(1, 0, 0))
+# output requested usd / btc allocations to follow the retirement fund.
+bmc.retirement$requested_allocations
+```
+
+
+#### BMC Percentage Allocations (All Funds).
+```{r message=FALSE}
+bmc.retirement$blue_magic_allocations
+```
+
+#### Input Portfolio Weights (Retirement / Dynamic / Extreme).
+```{r message=FALSE}
+bmc.retirement$weights
+```
+
+#### Input Total USD Allocation.
+```{r message=FALSE}
+bmc.retirement$usd_allocation
+```
+
+#### Total BTC Allocation - Calculated from USD Amount.
+```{r message=FALSE}
+bmc.retirement$btc_allocation
+```
+
+## Dynamic Fund
+
+#### Request 200 BTC Allocation.
+```{r message=FALSE}
+bmc.dynamic <- BlueMagicPortfolio(btc_allocation = 200,
+                                  weights        = c(0, 1, 0))
+# Output requested usd / btc allocations to follow the dynamic fund.
+bmc.dynamic$requested_allocations
+```
+
+## Extreme Fund
+#### Request 100k USD Allocation.
+```{r message=FALSE}
+bmc.extreme <- BlueMagicPortfolio(usd_allocation = 100000,
+                                  weights        = c(0, 0, 1))
+# Output requested usd / btc allocations to follow the extreme fund.
+bmc.extreme$requested_allocations
+```
+
+## Mixed Portfolio - Equal Weights
+
+#### Request 1M USD Allocation.
+```{r message=FALSE}
+# Equal weights between the three funds: (1, 1, 1)-ratio. Request 1M allocation.
+bmc.mixed <- BlueMagicPortfolio(usd_allocation = 1000000,
+                                weights        = c(1, 1, 1))
+bmc.mixed$requested_allocations
+```
+
+## Donations
+
+If you find this software useful and/or you would like to see additional extensions, feel free to donate some crypto:
+
+ - BTC: 1QHtZLZ15Cmj4FPr5h5exDjYciBDhh7mzA
+ - LTC: LhKf6MQ7LY1k8YMaAq9z3APz8kVyFX3L2M
+ - ETH: 0x8E44D7C96896f2e0Cd5a6CC1A2e6a3716B85B479
+ - DASH: Xvicgp3ga3sczHtLqt3ekt7fQ62G9KaKNB
+
+Or preferably, donate some of my favorite coins :)
+
+ - GAME: GMxcsDAaHCBkLnN42Fs9Dy1fpDiLNxSKX1
+ - WAVES: 3PQ8KFdw2nWxQATsXQj8NJvSa1VhBcKePaf
+ 
+## Licensing
+
+Copyright 2017 Essential Data Science Consulting ltd. ([EssentialQuant.com](http://essentialquant.com "EssentialQuant") / jellenvermeir@essentialquant.com).
+This software is copyrighted under the MIT license: View added [LICENSE](./LICENSE) file.
